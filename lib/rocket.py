@@ -1,4 +1,4 @@
-import pygame, math
+import pygame, math, os
 
 class Rocket():
     def __init__(self,planet):
@@ -6,12 +6,12 @@ class Rocket():
         self.vector = (0,0)
         self.angle = 90
         self.rotate_angle = 2
-        self.rocket_imgs = [pygame.image.load("./assets/rockets/1.png"),
-                            pygame.image.load("./assets/rockets/2.png"),
-                            pygame.image.load("./assets/rockets/3.png")]
+        self.rocket_imgs = [pygame.image.load(os.path.join("assets","rockets","1.png")),
+                            pygame.image.load(os.path.join("assets","rockets","2.png")),
+                            pygame.image.load(os.path.join("assets","rockets","3.png"))]
         self.active_rocket_state = 0
         self.active_rocket = self.rocket_imgs[self.active_rocket_state]
-        self.update_location()
+        self.update_planet_location()
 
     def draw_rocket(self,SCREEN):
         SCREEN.blit(self.active_rocket,self.location)

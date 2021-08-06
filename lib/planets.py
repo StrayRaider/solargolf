@@ -1,4 +1,4 @@
-import random, pygame
+import random, pygame, os
 from pygame import gfxdraw
 
 class Planet():
@@ -8,7 +8,7 @@ class Planet():
         self.orbit = radius*2
         self.g_field = radius*2.5
         planet_num = random.randint(1,9)
-        planet_img_loc = "./assets/planets/{}.png".format(str(planet_num))
+        planet_img_loc = os.path.join(os.getcwd(),"assets","planets","{}.png".format(str(planet_num)))
         self.planet_img = pygame.image.load(planet_img_loc)
         self.planet_img = pygame.transform.scale(self.planet_img,(self.orbit,self.orbit))
 
