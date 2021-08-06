@@ -39,6 +39,8 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            rocket_.remove_planet()
 
     update()
     draw()

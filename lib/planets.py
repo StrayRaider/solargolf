@@ -17,4 +17,5 @@ class Planet():
         color = (255,255,255)
         SCREEN.blit(self.planet_img,(self.location[0]-self.radius,self.location[1]-self.radius))
         gfxdraw.aacircle(SCREEN,*self.location,self.orbit,color)
+
         
