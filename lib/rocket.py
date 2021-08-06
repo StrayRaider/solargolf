@@ -20,9 +20,9 @@ class Rocket():
         if self.planet:
             self.angle += self.rotate_angle
             self.active_rocket =  pygame.transform.rotate(self.rocket_imgs[self.active_rocket_state], self.angle)
-            self.update_location()
-            
-    def update_location(self):
+            self.update_planet_location()
+
+    def update_planet_location(self):
         x = math.sin(math.radians(self.angle)) * self.planet.orbit
         y = math.cos(math.radians(self.angle)) * self.planet.orbit
         image_center = self.active_rocket.get_rect().center
