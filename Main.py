@@ -18,6 +18,8 @@ rocket_ = rocket.Rocket(active_lvl[1])
 def update():
     #Roketi guncelleyelim
     rocket_.update_rocket()
+    if not rocket_.planet:
+        rocket_.rocket_in_planet(active_lvl)
 
 def draw():
     #zemin
@@ -29,6 +31,7 @@ def draw():
     #Gezegenler
     for planet in active_lvl:
         planet.draw_planet(SCREEN)
+        #planet.gravity_field(SCREEN)
     #roket
     rocket_.draw_rocket(SCREEN)
 
