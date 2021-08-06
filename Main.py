@@ -1,6 +1,6 @@
 import pygame, sys
 from pygame import gfxdraw
-from lib import backgrounds
+from lib import backgrounds, lvls, rocket
 
 
 WIDTH = 1280
@@ -12,8 +12,12 @@ pygame.init()
 SCREEN = pygame.display.set_mode((WIDTH,HEIGHT))
 STARS = backgrounds.get_stars(WIDTH,HEIGHT)
 
+active_lvl = lvls.lvls["1"]
+rocket_ = rocket.Rocket(active_lvl[1])
+
 def update():
-    pass
+    #Roketi guncelleyelim
+    rocket_.update_rocket()
 
 def draw():
     #zemin
@@ -22,6 +26,11 @@ def draw():
     for star in STARS:
         gfxdraw.filled_circle(SCREEN,*star)
         gfxdraw.aacircle(SCREEN,*star)
+    #Gezegenler
+    for planet in active_lvl:
+        planet.draw_planet(SCREEN)
+    #roket
+    rocket_.draw_rocket(SCREEN)
 
 #oyun dongusu
 while True:
