@@ -58,3 +58,18 @@ class Rocket():
                 self.vector = (self.vector[0]+x,self.vector[1]+y)
             else:
                 self.planet = planet
+                x = (planet.location[0] - image_center[0])
+                y = (planet.location[1] - image_center[1])
+                if x > 0 and y > 0:
+                    add_angle = 0
+                elif x > 0 and y < 0:
+                    add_angle = 270
+                elif x < 0 and y > 0:
+                    add_angle = 90
+                elif x < 0 and y < 0:
+                    add_angle = 180
+                angle = math.atan(y/x)
+                if angle < 0:
+                    add_angle += 90
+                angle = 360 - angle
+                self.angle = int(math.degrees(angle)+add_angle)
