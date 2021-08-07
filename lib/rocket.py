@@ -10,6 +10,9 @@ class Rocket():
         self.rocket_imgs = [pygame.image.load(os.path.join("assets","rockets","1.png")),
                             pygame.image.load(os.path.join("assets","rockets","2.png")),
                             pygame.image.load(os.path.join("assets","rockets","3.png"))]
+        self.rotate_rocket_imgs = []
+        for rocket_img in self.rocket_imgs:
+            self.rotate_rocket_imgs.append(pygame.transform.rotate(rocket_img, 180))
         self.active_rocket_state = 0
         self.active_rocket = self.rocket_imgs[self.active_rocket_state]
         self.update_planet_location()
@@ -23,7 +26,10 @@ class Rocket():
                 self.angle -= self.rotate_angle
             else:
                 self.angle += self.rotate_angle
-            self.active_rocket = pygame.transform.rotate(self.rocket_imgs[self.active_rocket_state], self.angle)
+            if self.rocket_direction:
+                self.active_rocket = pygame.transform.rotate(self.rotate_rocket_imgs[self.active_rocket_state], self.angle)
+            else:
+                self.active_rocket = pygame.transform.rotate(self.rocket_imgs[self.active_rocket_state], self.angle)
             self.update_planet_location()
         else:
             self.location = (self.location[0]+self.vector[0],self.location[1]+self.vector[1])
@@ -60,16 +66,27 @@ class Rocket():
                 self.planet = planet
                 x = (planet.location[0] - image_center[0])
                 y = (planet.location[1] - image_center[1])
-                if x > 0 and y > 0:
-                    add_angle = 0
-                elif x > 0 and y < 0:
-                    add_angle = 270
-                elif x < 0 and y > 0:
-                    add_angle = 90
-                elif x < 0 and y < 0:
-                    add_angle = 180
-                angle = math.atan(y/x)
-                if angle < 0:
-                    add_angle += 90
-                angle = 360 - angle
-                self.angle = int(math.degrees(angle)+add_angle)
+                self.angle = self.coordinat_to_angle(x,y)
+
+                x = self.vector[0]
+                y = self.vector[1]
+                rocket_angle = self.coordinat_to_angle(x,y)
+                if rocket_angle > self.angle:
+                    self.rocket_direction = 1
+                else:
+                    self.rocket_direction = 0
+
+    def coordinat_to_angle(self,x,y):
+        if x > 0 and y > 0:
+            add_angle = 0
+        elif x > 0 and y < 0:
+            add_angle = 270
+        elif x < 0 and y > 0:
+            add_angle = 90
+        elif x < 0 and y < 0:
+            add_angle = 180
+        angle = math.atan(y/x)
+        if angle < 0:
+            add_angle += 90
+        angle = 360 - angle
+        return int(math.degrees(angle)+add_angle) % 360
