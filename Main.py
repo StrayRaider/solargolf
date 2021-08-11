@@ -20,6 +20,17 @@ def update():
     rocket_.update_rocket()
     if not rocket_.planet:
         rocket_.rocket_in_planet(active_lvl)
+#ölüm kontrol
+def is_dead():
+    x,y = rocket_.location
+    if x < 0 or x > WIDTH:
+        print("dead")
+        restart()
+        
+    elif y < 0 or y > HEIGHT:
+        print("dead")
+        restart()
+
 
 def draw():
     #zemin
@@ -34,6 +45,15 @@ def draw():
         #planet.gravity_field(SCREEN)
     #roket
     rocket_.draw_rocket(SCREEN)
+#yeniden başlat
+def restart():
+    if rocket_.planet != active_lvl[1]:
+        print("restart")
+        rocket_.planet = active_lvl[1]
+        rocket_.angle = 0
+        rocket_vector = (1,1)
+        rocket_.rocket_direction = 0
+
 
 #oyun dongusu
 while True:
@@ -42,11 +62,21 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+            
         elif event.type == pygame.MOUSEBUTTONDOWN:
             rocket_.remove_planet()
+            
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_r:
+                restart()
+
+
+
+            
 
     update()
     draw()
+    is_dead()
     
     pygame.display.flip()
     FPSCLOCK.tick(FPS)
