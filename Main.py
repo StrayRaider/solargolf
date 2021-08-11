@@ -1,6 +1,6 @@
 import pygame, sys
 from pygame import gfxdraw
-from lib import backgrounds, lvls, rocket
+from sglib import backgrounds, lvls, rocket
 
 
 WIDTH = 1280
