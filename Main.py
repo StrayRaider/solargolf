@@ -1,6 +1,6 @@
 import pygame, sys
 from pygame import gfxdraw
-from sglib import backgrounds, lvls, rocket, button
+from sglib import backgrounds, lvls, rocket
 
 
 WIDTH = 1280
@@ -15,7 +15,7 @@ STARS = backgrounds.get_stars(WIDTH,HEIGHT)
 active_lvl = lvls.lvls["1"]
 rocket_ = rocket.Rocket(active_lvl[1])
 restart_img_load = pygame.image.load("./assets/buttons/restart_1.png")
-button_restart = button.Button(restart_img_load,SCREEN)
+
 
 def update():
     #Roketi guncelleyelim
@@ -48,7 +48,6 @@ def draw():
     #roket
     rocket_.draw_rocket(SCREEN)
     #button draw
-    button_restart.buttondraw(100,100)
 #yeniden başlat
 def restart():
     if rocket_.planet != active_lvl[1]:
