@@ -71,6 +71,10 @@ while True:
             sys.exit()
             
         elif event.type == pygame.MOUSEBUTTONDOWN:
+            if button_list[1].isoverlap(pygame.mouse.get_pos()):
+                pygame.quit()
+                sys.exit()
+
             if button_list[0].isoverlap(pygame.mouse.get_pos()):
                 restart()
             else:
