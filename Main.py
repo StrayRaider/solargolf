@@ -1,6 +1,6 @@
 import pygame, sys
 from pygame import gfxdraw
-from sglib import backgrounds, lvls, rocket
+from sglib import backgrounds, lvls, rocket, buttons
 
 
 WIDTH = 1280
@@ -14,8 +14,11 @@ STARS = backgrounds.get_stars(WIDTH,HEIGHT)
 
 active_lvl = lvls.lvls["1"]
 rocket_ = rocket.Rocket(active_lvl[1])
+#buton işleri
 restart_img_load = pygame.image.load("./assets/buttons/restart_1.png")
-
+close_img_load = pygame.image.load("./assets/buttons/close_1.png")
+#1.si restart 2. si close
+button_list = [buttons.Button(restart_img_load, (800,500),100),buttons.Button(close_img_load, (900,500),100)]
 
 def update():
     #Roketi guncelleyelim
@@ -47,7 +50,9 @@ def draw():
         #planet.gravity_field(SCREEN)
     #roket
     rocket_.draw_rocket(SCREEN)
-    #button draw
+    #draw button list
+    for buton_ in button_list:
+        buton_.draw_button(SCREEN)
 #yeniden başlat
 def restart():
     if rocket_.planet != active_lvl[1]:
@@ -56,7 +61,6 @@ def restart():
         rocket_.angle = 0
         rocket_vector = (1,1)
         rocket_.rocket_direction = 0
-
 
 #oyun dongusu
 while True:
@@ -68,18 +72,10 @@ while True:
             
         elif event.type == pygame.MOUSEBUTTONDOWN:
             rocket_.remove_planet()
-            
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_r:
-                restart()
-
-
-
-            
 
     update()
     draw()
     is_dead()
-    
+
     pygame.display.flip()
     FPSCLOCK.tick(FPS)
