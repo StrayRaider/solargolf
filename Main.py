@@ -71,7 +71,10 @@ while True:
             sys.exit()
             
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            rocket_.remove_planet()
+            if button_list[0].isoverlap(pygame.mouse.get_pos()):
+                restart()
+            else:
+                rocket_.remove_planet()
 
     update()
     draw()
