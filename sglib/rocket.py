@@ -16,6 +16,7 @@ class Rocket():
         self.active_rocket_state = 0
         self.active_rocket = self.rocket_imgs[self.active_rocket_state]
         self.update_planet_location()
+        self.scored_planets = []
 
     def draw_rocket(self,SCREEN):
         SCREEN.blit(self.active_rocket,self.location)
@@ -64,6 +65,7 @@ class Rocket():
                 self.vector = (self.vector[0]+x,self.vector[1]+y)
             else:
                 self.planet = planet
+                self.scor_count()
                 x = (planet.location[0] - image_center[0])
                 y = (planet.location[1] - image_center[1])
                 self.angle = self.coordinat_to_angle(x,y)
@@ -90,3 +92,8 @@ class Rocket():
             add_angle += 90
         angle = 360 - angle
         return int(math.degrees(angle)+add_angle) % 360
+        
+    def scor_count(self):
+        if self.planet not in self.scored_planets and self.planet:
+            self.scored_planets.append(self.planet)
+
