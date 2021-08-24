@@ -12,7 +12,7 @@ SCREEN = pygame.display.set_mode((WIDTH,HEIGHT))
 STARS = backgrounds.get_stars(WIDTH,HEIGHT)
 lvl_no = 1
 active_lvl = lvls.lvls[lvl_no]
-rocket_ = rocket.Rocket(active_lvl[1])
+rocket_ = rocket.Rocket(active_lvl[0])
 button_list = [buttons.Button("./assets/buttons/restart_1.png", (1150,10),50),buttons.Button("./assets/buttons/close_1.png", (1210,10),50)]
 
 def update():
@@ -68,9 +68,9 @@ def draw():
 
 #yeniden başlat
 def restart():
-    if rocket_.planet != active_lvl[1]:
+    if rocket_.planet != active_lvl[0]:
         print("restart")
-        rocket_.planet = active_lvl[1]
+        rocket_.planet = active_lvl[0]
         rocket_.angle = 0
         rocket_vector = (1,1)
         rocket_.rocket_direction = 0
@@ -97,6 +97,5 @@ while True:
     draw()
     rocket_.scor_count()
     is_dead()
-
     pygame.display.flip()
     FPSCLOCK.tick(FPS)
