@@ -10,7 +10,7 @@ FPSCLOCK = pygame.time.Clock()
 pygame.init()
 SCREEN = pygame.display.set_mode((WIDTH,HEIGHT))
 STARS = backgrounds.get_stars(WIDTH,HEIGHT)
-lvl_no = 1
+lvl_no = 5
 active_lvl = lvls.lvls[lvl_no]
 rocket_ = rocket.Rocket(active_lvl[0])
 button_list = [buttons.Button("./assets/buttons/restart_1.png", (1150,10),50),buttons.Button("./assets/buttons/close_1.png", (1210,10),50)]
