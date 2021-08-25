@@ -13,7 +13,8 @@ STARS = backgrounds.get_stars(WIDTH,HEIGHT)
 lvl_no = 1
 active_lvl = lvls.lvls[lvl_no]
 rocket_ = rocket.Rocket(active_lvl[0])
-button_list = [buttons.Button("./assets/buttons/restart_1.png", (1150,10),50),buttons.Button("./assets/buttons/close_1.png", (1210,10),50)]
+button_list = [buttons.Button("./assets/buttons/restart_1.png", (1150,10),50),buttons.Button("./assets/buttons/close_1.png", (1210,10),50),buttons.Button("./assets/buttons/left_1.png", (1090,60),50),
+               buttons.Button("./assets/buttons/right_1.png", (1210,60),50)]
 
 def update():
     #Roketi guncelleyelim
@@ -32,18 +33,22 @@ def is_dead():
         restart()
 
 def draw_scor_table():
-    print("\n" , rocket_.scored_planets)
     start_pos = (930,35)
     end_leght = len(rocket_.scored_planets)/len(active_lvl)*200
     pygame.draw.line(SCREEN,(255,255,255) ,(start_pos[0]-10,start_pos[1]), (start_pos[0]+210,start_pos[1]), 25)
     pygame.draw.line(SCREEN,(80,120,250) , start_pos, (start_pos[0]+end_leght,start_pos[1]), 15)
     if len(rocket_.scored_planets) / len(active_lvl) == 1:
         print("lvl over")
-        lvl_change()
-        
-def lvl_change():
+        lvl_up()
+
+def lvl_up():
     global active_lvl, lvl_no
     lvl_no += 1
+    active_lvl = lvls.lvls[lvl_no]
+    restart()
+def lvl_down():
+    global active_lvl, lvl_no
+    lvl_no -= 1
     active_lvl = lvls.lvls[lvl_no]
     restart()
 
@@ -88,8 +93,19 @@ while True:
             if button_list[1].isoverlap(pygame.mouse.get_pos()):
                 pygame.quit()
                 sys.exit()
-            if button_list[0].isoverlap(pygame.mouse.get_pos()):
+            elif button_list[0].isoverlap(pygame.mouse.get_pos()):
                 restart()
+            elif button_list[2].isoverlap(pygame.mouse.get_pos()):
+                if lvl_no != 1:
+                    lvl_down()
+                else:
+                    print("ilk levelden geri gidemezsiniz")
+            elif button_list[3].isoverlap(pygame.mouse.get_pos()):
+                print(list(reversed(list(lvls.lvls)))[0])
+                if lvl_no != list(reversed(list(lvls.lvls)))[0]:
+                    lvl_up()
+                else:
+                    print("bu son level")
             else:
                 rocket_.remove_planet()
 
