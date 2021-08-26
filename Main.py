@@ -1,7 +1,34 @@
-import pygame, sys
+import pygame, sys, os
 from pygame import gfxdraw
 from sglib import backgrounds, lvls, rocket, buttons, blackhole
 
+max_lvl = 1
+
+def read_write_maxlvl(r_or_w):
+    global max_lvl
+    home = os.path.expanduser("~")
+    s_g_dir = os.path.join(home,".solargolf")
+    s_g_conf = os.path.join(s_g_dir,"config")
+    if not os.path.exists(s_g_dir):
+        os.makedirs(s_g_dir)
+    if r_or_w == "r":
+        if os.path.exists(s_g_conf):
+            f = open(s_g_conf,"r")
+            readed = f.read()
+            f.close()
+            try:
+                max_lvl = int(readed)
+                if max_lvl > list(reversed(list(lvls.lvls)))[0]:
+                    max_lvl = 1
+            except:
+                max_lvl = 1
+
+    elif r_or_w == "w":
+        f = open(s_g_conf, "w")
+        f.write(str(max_lvl))
+        f.close()
+
+read_write_maxlvl("r")
 WIDTH = 1280
 HEIGHT = 720
 FPS = 60
@@ -10,12 +37,16 @@ FPSCLOCK = pygame.time.Clock()
 pygame.init()
 SCREEN = pygame.display.set_mode((WIDTH,HEIGHT))
 STARS = backgrounds.get_stars(WIDTH,HEIGHT)
-lvl_no = 1
+lvl_no = max_lvl
 active_lvl = lvls.lvls[lvl_no]
 rocket_ = rocket.Rocket(active_lvl["planets"][0])
+passive_p = pygame.image.load("./assets/icons/progres_1.png")
+active_p = pygame.image.load("./assets/icons/progres_2.png")
 
-button_list = [buttons.Button("./assets/buttons/restart_1.png", (1150,10),50),buttons.Button("./assets/buttons/close_1.png", (1210,10),50),buttons.Button("./assets/buttons/left_1.png", (1090,60),50),
-               buttons.Button("./assets/buttons/right_1.png", (1210,60),50)]
+button_list = [buttons.Button("./assets/buttons/restart_1.png", (1150,10),50),
+               buttons.Button("./assets/buttons/close_1.png", (1210,10),50),
+               buttons.Button("./assets/buttons/left_1.png", (1000,10),50),
+               buttons.Button("./assets/buttons/right_1.png", (1060,10),50)]
 
 def update():
     #Roketi guncelleyelim
@@ -38,19 +69,32 @@ def is_dead():
         restart()
 
 def draw_scor_table():
-    start_pos = (930,35)
-    end_leght = len(rocket_.scored_planets)/len(active_lvl["planets"])*200
-    pygame.draw.line(SCREEN,(255,255,255) ,(start_pos[0]-10,start_pos[1]), (start_pos[0]+210,start_pos[1]), 25)
-    pygame.draw.line(SCREEN,(80,120,250) , start_pos, (start_pos[0]+end_leght,start_pos[1]), 15)
+    x,y = (920,15)
+    for say_2 in range(0, len(rocket_.scored_planets)):
+        SCREEN.blit(active_p, (x, y))
+        x -= 50
+    for say in range(0,int(len(active_lvl["planets"])) - len(rocket_.scored_planets)):
+        SCREEN.blit(passive_p, (x, y))
+        x -= 50
+
+
     if len(rocket_.scored_planets) / len(active_lvl["planets"]) == 1:
         print("lvl over")
         lvl_up()
 
-def lvl_up():
-    global active_lvl, lvl_no
-    lvl_no += 1
+def lvl_up(arrow = False):
+    global active_lvl, lvl_no, max_lvl
+    if arrow:
+        if max_lvl > lvl_no:
+            lvl_no += 1
+    else:
+        lvl_no += 1
+        if max_lvl < lvl_no:
+            max_lvl = lvl_no
+
     active_lvl = lvls.lvls[lvl_no]
     restart()
+
 def lvl_down():
     global active_lvl, lvl_no
     lvl_no -= 1
@@ -96,11 +140,13 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+            read_write_maxlvl("w")
             sys.exit()
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if button_list[1].isoverlap(pygame.mouse.get_pos()):
                 pygame.quit()
+                read_write_maxlvl("w")
                 sys.exit()
             elif button_list[0].isoverlap(pygame.mouse.get_pos()):
                 restart()
@@ -112,7 +158,7 @@ while True:
             elif button_list[3].isoverlap(pygame.mouse.get_pos()):
                 print(list(reversed(list(lvls.lvls)))[0])
                 if lvl_no != list(reversed(list(lvls.lvls)))[0]:
-                    lvl_up()
+                    lvl_up(True)
                 else:
                     print("bu son level")
             else:

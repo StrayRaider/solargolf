@@ -6,7 +6,7 @@ class Planet():
         self.location = location
         self.radius = radius
         self.orbit = radius*2
-        self.g_field = radius*4
+        self.g_field = radius*3
         planet_num = random.randint(1, 9)
         planet_img_loc = os.path.join(os.getcwd(),"assets","planets","{}.png".format(str(planet_num)))
         self.planet_img = pygame.image.load(planet_img_loc)
