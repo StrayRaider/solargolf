@@ -72,10 +72,11 @@ def draw_scor_table():
     x,y = (920,15)
     for say_2 in range(0, len(rocket_.scored_planets)):
         SCREEN.blit(active_p, (x, y))
-        x -= 50
+        x -= 45
     for say in range(0,int(len(active_lvl["planets"])) - len(rocket_.scored_planets)):
         SCREEN.blit(passive_p, (x, y))
-        x -= 50
+        x -= 45
+
 
 
     if len(rocket_.scored_planets) / len(active_lvl["planets"]) == 1:
@@ -91,7 +92,8 @@ def lvl_up(arrow = False):
         lvl_no += 1
         if max_lvl < lvl_no:
             max_lvl = lvl_no
-
+        if lvl_no > (list(reversed(list(lvls.lvls)))[0]):
+            lvl_no -= 1
     active_lvl = lvls.lvls[lvl_no]
     restart()
 
@@ -156,7 +158,6 @@ while True:
                 else:
                     print("ilk levelden geri gidemezsiniz")
             elif button_list[3].isoverlap(pygame.mouse.get_pos()):
-                print(list(reversed(list(lvls.lvls)))[0])
                 if lvl_no != list(reversed(list(lvls.lvls)))[0]:
                     lvl_up(True)
                 else:
