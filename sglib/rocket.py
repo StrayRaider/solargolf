@@ -78,6 +78,23 @@ class Rocket():
                 else:
                     self.rocket_direction = 0
 
+    def rocket_in_black_h(self,black_holes):
+        for black_h in black_holes:
+            image_center = self.active_rocket.get_rect().center
+            image_center = (self.location[0]+image_center[0],self.location[1]+image_center[1])
+            distance = math.sqrt((image_center[0]-black_h.location[0])**2+(image_center[1]-black_h.location[1])**2)
+            if distance > black_h.g_field:
+                continue
+            elif distance > black_h.radius:
+                x = (black_h.location[0]-image_center[0])*0.0001
+                y = (black_h.location[1]-image_center[1])*0.0001
+                self.vector = (self.vector[0]+x,self.vector[1]+y)
+
+            else:
+                print("dead")
+                return True
+            return False
+
     def coordinat_to_angle(self,x,y):
         if x > 0 and y > 0:
             add_angle = 0

@@ -1,6 +1,6 @@
 import pygame, sys
 from pygame import gfxdraw
-from sglib import backgrounds, lvls, rocket, buttons
+from sglib import backgrounds, lvls, rocket, buttons, blackhole
 
 WIDTH = 1280
 HEIGHT = 720
@@ -12,7 +12,8 @@ SCREEN = pygame.display.set_mode((WIDTH,HEIGHT))
 STARS = backgrounds.get_stars(WIDTH,HEIGHT)
 lvl_no = 1
 active_lvl = lvls.lvls[lvl_no]
-rocket_ = rocket.Rocket(active_lvl[0])
+rocket_ = rocket.Rocket(active_lvl["planets"][0])
+
 button_list = [buttons.Button("./assets/buttons/restart_1.png", (1150,10),50),buttons.Button("./assets/buttons/close_1.png", (1210,10),50),buttons.Button("./assets/buttons/left_1.png", (1090,60),50),
                buttons.Button("./assets/buttons/right_1.png", (1210,60),50)]
 
@@ -20,7 +21,11 @@ def update():
     #Roketi guncelleyelim
     rocket_.update_rocket()
     if not rocket_.planet:
-        rocket_.rocket_in_planet(active_lvl)
+        rocket_.rocket_in_planet(active_lvl["planets"])
+        c = rocket_.rocket_in_black_h(active_lvl["blackhole"])
+        if c:
+            restart()
+        
 #ölüm kontrol
 def is_dead():
     x,y = rocket_.location
@@ -34,10 +39,10 @@ def is_dead():
 
 def draw_scor_table():
     start_pos = (930,35)
-    end_leght = len(rocket_.scored_planets)/len(active_lvl)*200
+    end_leght = len(rocket_.scored_planets)/len(active_lvl["planets"])*200
     pygame.draw.line(SCREEN,(255,255,255) ,(start_pos[0]-10,start_pos[1]), (start_pos[0]+210,start_pos[1]), 25)
     pygame.draw.line(SCREEN,(80,120,250) , start_pos, (start_pos[0]+end_leght,start_pos[1]), 15)
-    if len(rocket_.scored_planets) / len(active_lvl) == 1:
+    if len(rocket_.scored_planets) / len(active_lvl["planets"]) == 1:
         print("lvl over")
         lvl_up()
 
@@ -60,9 +65,13 @@ def draw():
         gfxdraw.filled_circle(SCREEN,*star)
         gfxdraw.aacircle(SCREEN,*star)
     #Gezegenler
-    for planet in active_lvl:
+    for planet in active_lvl["planets"]:
         planet.draw_planet(SCREEN)
         #planet.gravity_field(SCREEN)
+    #kara delik
+    for black_h in active_lvl["blackhole"]:
+        black_h.draw_black_h(SCREEN)
+        #black_h.gravity_field_b_h(SCREEN)
     #roket
     rocket_.draw_rocket(SCREEN)
     #draw button list
@@ -73,9 +82,9 @@ def draw():
 
 #yeniden başlat
 def restart():
-    if rocket_.planet != active_lvl[0]:
+    if rocket_.planet != active_lvl["planets"][0]:
         print("restart")
-        rocket_.planet = active_lvl[0]
+        rocket_.planet = active_lvl["planets"][0]
         rocket_.angle = 0
         rocket_vector = (1,1)
         rocket_.rocket_direction = 0
