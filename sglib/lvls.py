@@ -4,7 +4,7 @@ from sglib import planets, blackhole
 
 lvls = {1:{"planets":[planets.Planet((300,300),30),
 					  planets.Planet((700,200),50)],
-				      "blackhole":[]},
+				      "blackhole":[blackhole.Blackhole((500,500),50)]},
         2:{"planets":[planets.Planet((300,300),30),
         			  planets.Planet((700,200),50),
         			  planets.Planet((600,500),50)],

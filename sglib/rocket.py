@@ -63,6 +63,7 @@ class Rocket():
                 x = (planet.location[0]-image_center[0])*0.0001
                 y = (planet.location[1]-image_center[1])*0.0001
                 self.vector = (self.vector[0]+x,self.vector[1]+y)
+                return False
             else:
                 self.planet = planet
                 self.scor_count()
@@ -77,6 +78,7 @@ class Rocket():
                     self.rocket_direction = 1
                 else:
                     self.rocket_direction = 0
+                return True
 
     def rocket_in_black_h(self,black_holes):
         for black_h in black_holes:

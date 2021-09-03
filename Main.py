@@ -42,17 +42,22 @@ active_lvl = lvls.lvls[lvl_no]
 rocket_ = rocket.Rocket(active_lvl["planets"][0])
 passive_p = pygame.image.load("./assets/icons/progres_1.png")
 active_p = pygame.image.load("./assets/icons/progres_2.png")
-
 button_list = [buttons.Button("./assets/buttons/restart_1.png", (1150,10),50),
                buttons.Button("./assets/buttons/close_1.png", (1210,10),50),
                buttons.Button("./assets/buttons/left_1.png", (1000,10),50),
                buttons.Button("./assets/buttons/right_1.png", (1060,10),50)]
+connect_aud = pygame.mixer.Sound("./assets/musics/connect.wav")
+disconnect_aud = pygame.mixer.Sound("./assets/musics/disconnect.wav")
+music = pygame.mixer.music.load("./assets/musics/m_1.wav")
+pygame.mixer.music.play(-1)
 
 def update():
     #Roketi guncelleyelim
     rocket_.update_rocket()
     if not rocket_.planet:
-        rocket_.rocket_in_planet(active_lvl["planets"])
+        is_connect = rocket_.rocket_in_planet(active_lvl["planets"])
+        if is_connect:
+            connect_aud.play()
         c = rocket_.rocket_in_black_h(active_lvl["blackhole"])
         if c:
             restart()
@@ -88,6 +93,7 @@ def lvl_up(arrow = False):
     if arrow:
         if max_lvl > lvl_no:
             lvl_no += 1
+            connect_aud.play()
     else:
         lvl_no += 1
         if max_lvl < lvl_no:
@@ -100,6 +106,7 @@ def lvl_up(arrow = False):
 def lvl_down():
     global active_lvl, lvl_no
     lvl_no -= 1
+    connect_aud.play()
     active_lvl = lvls.lvls[lvl_no]
     restart()
 
@@ -151,6 +158,7 @@ while True:
                 read_write_maxlvl("w")
                 sys.exit()
             elif button_list[0].isoverlap(pygame.mouse.get_pos()):
+                connect_aud.play()
                 restart()
             elif button_list[2].isoverlap(pygame.mouse.get_pos()):
                 if lvl_no != 1:
@@ -164,6 +172,7 @@ while True:
                     print("bu son level")
             else:
                 rocket_.remove_planet()
+                disconnect_aud.play()
 
     update()
     draw()
