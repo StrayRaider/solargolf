@@ -180,3 +180,4 @@ while True:
     is_dead()
     pygame.display.flip()
     FPSCLOCK.tick(FPS)
+
