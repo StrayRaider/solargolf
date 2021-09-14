@@ -171,8 +171,8 @@ while True:
                 else:
                     print("bu son level")
             else:
-                rocket_.remove_planet()
-                disconnect_aud.play()
+                if rocket_.remove_planet():
+                    disconnect_aud.play()
 
     update()
     draw()

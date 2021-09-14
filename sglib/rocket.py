@@ -51,6 +51,8 @@ class Rocket():
                 self.vector = (x,-y)
             else:
                 self.vector = (-x,y)
+            return True
+        return False
 
     def rocket_in_planet(self,planets):
         for planet in planets:
