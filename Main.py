@@ -1,6 +1,6 @@
 import pygame, sys, os
 from pygame import gfxdraw
-from sglib import backgrounds, lvls, rocket, buttons, blackhole
+from sglib import backgrounds, lvls, rocket, buttons, blackhole, settings
 
 max_lvl = 1
 
@@ -29,23 +29,32 @@ def read_write_maxlvl(r_or_w):
         f.close()
 
 read_write_maxlvl("r")
-WIDTH = 1280
-HEIGHT = 720
+
+
+pygame.init()
+scl_fac = settings.scale_factor()
+
+WIDTH = int(1280*scl_fac)
+HEIGHT = int(720*scl_fac)
+print(WIDTH,HEIGHT)
 FPS = 60
 FPSCLOCK = pygame.time.Clock()
 
-pygame.init()
 SCREEN = pygame.display.set_mode((WIDTH,HEIGHT))
 STARS = backgrounds.get_stars(WIDTH,HEIGHT)
 lvl_no = max_lvl
 active_lvl = lvls.lvls[lvl_no]
-rocket_ = rocket.Rocket(active_lvl["planets"][0])
-passive_p = pygame.image.load("./assets/icons/progres_1.png")
-active_p = pygame.image.load("./assets/icons/progres_2.png")
-button_list = [buttons.Button("./assets/buttons/restart_1.png", (1150,10),50),
-               buttons.Button("./assets/buttons/close_1.png", (1210,10),50),
-               buttons.Button("./assets/buttons/left_1.png", (1000,10),50),
-               buttons.Button("./assets/buttons/right_1.png", (1060,10),50)]
+rocket_ = rocket.Rocket(active_lvl["planets"][0], scl_fac)
+#passive_p = pygame.image.load("./assets/icons/progres_1.png")
+#active_p = pygame.image.load("./assets/icons/progres_2.png")
+active_p = pygame.transform.scale(pygame.image.load("./assets/icons/progres_2.png"),(int(40*scl_fac),int(40*scl_fac)))
+passive_p = pygame.transform.scale(pygame.image.load("./assets/icons/progres_1.png"),(int(40*scl_fac),int(40*scl_fac)))
+
+
+button_list = [buttons.Button("./assets/buttons/restart_1.png", (1150 , 10), 50),
+               buttons.Button("./assets/buttons/close_1.png", (1210 , 10), 50),
+               buttons.Button("./assets/buttons/left_1.png", (1000 , 10), 50),
+               buttons.Button("./assets/buttons/right_1.png", (1060 , 10), 50)]
 connect_aud = pygame.mixer.Sound("./assets/musics/connect.wav")
 disconnect_aud = pygame.mixer.Sound("./assets/musics/disconnect.wav")
 music = pygame.mixer.music.load("./assets/musics/m_1.wav")
@@ -74,13 +83,13 @@ def is_dead():
         restart()
 
 def draw_scor_table():
-    x,y = (920,15)
+    x,y = (int(920*scl_fac),int(15*scl_fac))
     for say_2 in range(0, len(rocket_.scored_planets)):
         SCREEN.blit(active_p, (x, y))
-        x -= 45
+        x -= int(45*scl_fac)
     for say in range(0,int(len(active_lvl["planets"])) - len(rocket_.scored_planets)):
         SCREEN.blit(passive_p, (x, y))
-        x -= 45
+        x -= int(45*scl_fac)
 
 
 
@@ -164,7 +173,7 @@ while True:
                 if lvl_no != 1:
                     lvl_down()
                 else:
-                    print("ilk levelden geri gidemezsiniz")
+                    print("ilk levelden geri gidemezsiniz") # açık olan son levele yönlendirilebilir
             elif button_list[3].isoverlap(pygame.mouse.get_pos()):
                 if lvl_no != list(reversed(list(lvls.lvls)))[0]:
                     lvl_up(True)

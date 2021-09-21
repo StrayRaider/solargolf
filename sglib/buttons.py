@@ -1,11 +1,13 @@
 import pygame
+from sglib import settings
 
 class Button():
     def __init__(self,img,but_loc,size):
-        self.location = but_loc
-        self.size = size
+        self.scl_fac =  settings.scale_factor()
+        self.location = (int(but_loc[0]* self.scl_fac), int(but_loc[1]* self.scl_fac))
+        self.size = int(size * self.scl_fac)
         self.img = pygame.image.load(img)
-        self.img = pygame.transform.scale(self.img,(size,size))
+        self.img = pygame.transform.scale(self.img,(self.size,self.size))
         
     def draw_button(self,SCREEN):
         SCREEN.blit(self.img,self.location)

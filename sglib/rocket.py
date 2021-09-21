@@ -1,15 +1,18 @@
 import pygame, math, os
+#yapılacaklar 1 : image centeri local değişken olarak tanımla ve kullanıldığı yerlere tekrardan ekle
+
 
 class Rocket():
-    def __init__(self,planet):
+    def __init__(self,planet,scl_fac):
+        self.scl_fac = scl_fac
         self.planet = planet
         self.vector = (1,1)
         self.angle = 0
         self.rotate_angle = 2
         self.rocket_direction = 0#0 saat tersi 1 saat yonu
-        self.rocket_imgs = [pygame.image.load(os.path.join("assets","rockets","1.png")),
-                            pygame.image.load(os.path.join("assets","rockets","2.png")),
-                            pygame.image.load(os.path.join("assets","rockets","3.png"))]
+        self.rocket_imgs = [pygame.transform.scale(pygame.image.load(os.path.join("assets","rockets","1.png")),(int(40* self.scl_fac),int(20* self.scl_fac))),
+                            pygame.transform.scale(pygame.image.load(os.path.join("assets","rockets","2.png")),(int(40* self.scl_fac),int(20* self.scl_fac))),
+                            pygame.transform.scale(pygame.image.load(os.path.join("assets","rockets","3.png")),(int(40* self.scl_fac),int(20* self.scl_fac)))]
         self.rotate_rocket_imgs = []
         for rocket_img in self.rocket_imgs:
             self.rotate_rocket_imgs.append(pygame.transform.rotate(rocket_img, 180))
