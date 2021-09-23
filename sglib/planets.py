@@ -4,7 +4,7 @@ from sglib import settings
 
 class Planet():
     def __init__(self, location, radius):
-        self.scl_fac =  settings.scale_factor()
+        self.scl_fac =  settings.scale_factor()[0]
         self.location = (int(location[0]* self.scl_fac), int(location[1]* self.scl_fac))
         self.radius = int(radius * self.scl_fac)
         self.orbit = self.radius*2

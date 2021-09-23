@@ -32,10 +32,25 @@ read_write_maxlvl("r")
 
 
 pygame.init()
-scl_fac = settings.scale_factor()
+scl_fac = settings.scale_factor()[0]
+screen_ratio = pygame.display.Info()
+comp_sizes = (screen_ratio.current_w, screen_ratio.current_h)
+#sizes_d = (1366, 1366)
 
-WIDTH = int(1280*scl_fac)
-HEIGHT = int(720*scl_fac)
+if settings.scale_factor()[1] == "x": # x büyük olan ise : x 
+    WIDTH = int(1280*scl_fac)
+    HEIGHT = comp_sizes[1]
+    #HEIGHT = sizes_d[1]
+
+elif settings.scale_factor()[1] == "y":
+    WIDTH = int(1280*scl_fac)
+    #WIDTH = sizes_d[0]
+    HEIGHT = int(720*scl_fac)
+
+elif settings.scale_factor()[1] == "xy":
+    WIDTH = int(1280*scl_fac)
+    HEIGHT = int(720*scl_fac)
+
 print(WIDTH,HEIGHT)
 FPS = 60
 FPSCLOCK = pygame.time.Clock()

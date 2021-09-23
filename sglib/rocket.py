@@ -6,7 +6,7 @@ class Rocket():
     def __init__(self,planet,scl_fac):
         self.scl_fac = scl_fac
         self.planet = planet
-        self.vector = (1,1)
+        self.vector = (1*scl_fac,1*scl_fac)
         self.angle = 0
         self.rotate_angle = 2
         self.rocket_direction = 0#0 saat tersi 1 saat yonu
@@ -48,8 +48,8 @@ class Rocket():
     def remove_planet(self):
         if self.planet:
             self.planet = False
-            x = math.cos(math.radians(self.angle)) * 2
-            y = math.sin(math.radians(self.angle)) * 2
+            x = math.cos(math.radians(self.angle)) * 2 *self.scl_fac
+            y = math.sin(math.radians(self.angle)) * 2 *self.scl_fac
             if self.rocket_direction:
                 self.vector = (x,-y)
             else:

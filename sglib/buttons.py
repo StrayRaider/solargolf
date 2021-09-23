@@ -3,7 +3,7 @@ from sglib import settings
 
 class Button():
     def __init__(self,img,but_loc,size):
-        self.scl_fac =  settings.scale_factor()
+        self.scl_fac =  settings.scale_factor()[0]
         self.location = (int(but_loc[0]* self.scl_fac), int(but_loc[1]* self.scl_fac))
         self.size = int(size * self.scl_fac)
         self.img = pygame.image.load(img)
