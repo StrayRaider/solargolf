@@ -1,10 +1,12 @@
 import pygame
 from pygame import gfxdraw
+from sglib import settings
 
 class Blackhole():
     def __init__(self,location,radius):
-        self.location = location
-        self.radius = radius
+        self.scl_fac =  settings.scale_factor()[0]
+        self.location = (int(location[0]* self.scl_fac), int(location[1]* self.scl_fac))
+        self.radius = int(radius * self.scl_fac)
         self.orbit = radius*2
         self.g_field = radius*3
         self.img_loc = "./assets/blackholes/blackhole_1.png"

@@ -34,17 +34,15 @@ read_write_maxlvl("r")
 pygame.init()
 scl_fac = settings.scale_factor()[0]
 screen_ratio = pygame.display.Info()
-comp_sizes = (screen_ratio.current_w, screen_ratio.current_h)
-#sizes_d = (1366, 1366)
+#comp_sizes = (screen_ratio.current_w, screen_ratio.current_h)
+comp_sizes = (1280, 720)
 
 if settings.scale_factor()[1] == "x": # x büyük olan ise : x 
     WIDTH = int(1280*scl_fac)
     HEIGHT = comp_sizes[1]
-    #HEIGHT = sizes_d[1]
 
 elif settings.scale_factor()[1] == "y":
     WIDTH = int(1280*scl_fac)
-    #WIDTH = sizes_d[0]
     HEIGHT = int(720*scl_fac)
 
 elif settings.scale_factor()[1] == "xy":
@@ -56,7 +54,7 @@ FPS = 60
 FPSCLOCK = pygame.time.Clock()
 
 SCREEN = pygame.display.set_mode((WIDTH,HEIGHT))
-STARS = backgrounds.get_stars(WIDTH,HEIGHT)
+STARS = backgrounds.get_stars(WIDTH, HEIGHT, scl_fac)
 lvl_no = max_lvl
 active_lvl = lvls.lvls[lvl_no]
 rocket_ = rocket.Rocket(active_lvl["planets"][0], scl_fac)
@@ -69,7 +67,9 @@ passive_p = pygame.transform.scale(pygame.image.load("./assets/icons/progres_1.p
 button_list = [buttons.Button("./assets/buttons/restart_1.png", (1150 , 10), 50),
                buttons.Button("./assets/buttons/close_1.png", (1210 , 10), 50),
                buttons.Button("./assets/buttons/left_1.png", (1000 , 10), 50),
-               buttons.Button("./assets/buttons/right_1.png", (1060 , 10), 50)]
+               buttons.Button("./assets/buttons/right_1.png", (1060 , 10), 50),
+               buttons.Button("./assets/buttons/free.png", (940 , 10), 50)]#sayı
+
 connect_aud = pygame.mixer.Sound("./assets/musics/connect.wav")
 disconnect_aud = pygame.mixer.Sound("./assets/musics/disconnect.wav")
 music = pygame.mixer.music.load("./assets/musics/m_1.wav")
@@ -98,7 +98,7 @@ def is_dead():
         restart()
 
 def draw_scor_table():
-    x,y = (int(920*scl_fac),int(15*scl_fac))
+    x,y = (int(860*scl_fac),int(15*scl_fac))
     for say_2 in range(0, len(rocket_.scored_planets)):
         SCREEN.blit(active_p, (x, y))
         x -= int(45*scl_fac)
@@ -156,6 +156,12 @@ def draw():
         buton_.draw_button(SCREEN)
     #score
     draw_scor_table()
+    # SAYI YAZ
+    font = pygame.font.Font('freesansbold.ttf', int(45*scl_fac))
+    text = font.render(str(lvl_no), True, (0,0,0))
+    textRect = text.get_rect()
+    textRect.center = (int(964*scl_fac),int(38*scl_fac))
+    SCREEN.blit(text, textRect)
 
 #yeniden başlat
 def restart():
