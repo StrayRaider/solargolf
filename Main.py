@@ -1,6 +1,6 @@
 import pygame, sys, os
 from pygame import gfxdraw
-from sglib import backgrounds, lvls, rocket, buttons, blackhole, settings
+from sglib import backgrounds, lvls, rocket, buttons, blackhole, settings, meteor	
 
 max_lvl = 1
 
@@ -73,7 +73,15 @@ button_list = [buttons.Button("./assets/buttons/restart_1.png", (1150 , 10), 50)
 connect_aud = pygame.mixer.Sound("./assets/musics/connect.wav")
 disconnect_aud = pygame.mixer.Sound("./assets/musics/disconnect.wav")
 music = pygame.mixer.music.load("./assets/musics/m_1.wav")
-pygame.mixer.music.play(-1)
+#pygame.mixer.music.play(-1)
+
+meteor_lar = [meteor.Meteor(scl_fac,comp_sizes),
+              meteor.Meteor(scl_fac,comp_sizes),
+              meteor.Meteor(scl_fac,comp_sizes),
+              meteor.Meteor(scl_fac,comp_sizes),
+              meteor.Meteor(scl_fac,comp_sizes)]
+for met in meteor_lar:
+    met.loc_and_vec()
 
 def update():
     #Roketi guncelleyelim
@@ -85,6 +93,10 @@ def update():
         c = rocket_.rocket_in_black_h(active_lvl["blackhole"])
         if c:
             restart()
+    for met in meteor_lar:
+        met.update_met()
+        if met.met_in_planet(active_lvl["planets"]):
+            met.loc_and_vec()
         
 #ölüm kontrol
 def is_dead():
@@ -96,6 +108,12 @@ def is_dead():
     elif y < 0 or y > HEIGHT:
         print("dead")
         restart()
+    #meteor dışarıda mı
+    for met in meteor_lar:
+        if met.location[0] < 0 or met.location[0] > comp_sizes[0]:
+            met.loc_and_vec()
+        elif met.location[1] < 0 or met.location[1] > comp_sizes[1]:
+            met.loc_and_vec()
 
 def draw_scor_table():
     x,y = (int(860*scl_fac),int(15*scl_fac))
@@ -162,6 +180,9 @@ def draw():
     textRect = text.get_rect()
     textRect.center = (int(964*scl_fac),int(38*scl_fac))
     SCREEN.blit(text, textRect)
+    #meteor çiz
+    for met in meteor_lar:
+        met.draw_met(SCREEN)
 
 #yeniden başlat
 def restart():
@@ -172,6 +193,8 @@ def restart():
         rocket_vector = (1,1)
         rocket_.rocket_direction = 0
         rocket_.scored_planets = []
+    for met in meteor_lar:
+        met.loc_and_vec()
         
 #oyun dongusu
 while True:
